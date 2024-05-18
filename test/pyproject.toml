@@ -1,0 +1,11 @@
+[project]
+name = "DesktopGui"
+version = "0.1.0"
+description = "Very wholesome"
+
+[build-system]
+requires = ["setuptools"]
+
+[project.scripts]
+desktopEnv = "desktop.main:main"
+fabricBar = "desktop.bar:bar.main"

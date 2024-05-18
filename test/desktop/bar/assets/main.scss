@@ -1,0 +1,25 @@
+// @font-face {
+// 	font-family: 'DSEG14 Modern Mini';
+// 	src: url(/tmp/DSEG14-Modern-MINI/DSEG14ModernMini-Regular.ttf) format('truetype')
+// }
+#Time{
+	padding: 0rem;
+	font-size: 1.3rem;
+	font-family: 'DSEG14 Modern';
+	& label {
+		margin-top: 0.3rem;
+		&:last-child{
+			margin-bottom: 0.3rem;
+		}
+	}
+}
+#RevealerToggle{
+	all:unset;
+	// padding: 0rem;
+	& > label {
+		margin: -0.1rem 0rem;
+		font-family: 'FiraCode Nerd Font';
+	}
+	// min-height: unset;
+	// background: unset;
+}
