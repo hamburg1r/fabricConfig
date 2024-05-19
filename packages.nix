@@ -13,27 +13,28 @@
 		pyproject = true;
 		propagatedBuildInputs = [
 			fabric
-          python3Packages.psutil
-          python3Packages.colorthief
-          python3Packages.requests
-          python3Packages.lxml
-          python3Packages.pam
-          python3Packages.thefuzz
+			psutil
+			colorthief
+			requests
+			lxml
+			pam
+			thefuzz
+			libsass
 		];
-        nativeBuildInputs = with pkgs; [
+		nativeBuildInputs = with pkgs; [
 			setuptools
-          vala # Vala compiler
-          gobject-introspection
+			vala # Vala compiler
+			gobject-introspection
 
-          # non python aditional packages
-          # gtk-session-lock # For gtk lock screen
-          playerctl # For mpirs
-          gnome.gnome-bluetooth # For bluetooth
-          networkmanager # For network
-          libgweather # For weather
-          libgudev # For uevent monitoring
-		  wrapGAppsHook
-        ];
+			# non python aditional packages
+			# gtk-session-lock # For gtk lock screen
+			playerctl # For mpirs
+			gnome.gnome-bluetooth # For bluetooth
+			networkmanager # For network
+			libgweather # For weather
+			libgudev # For uevent monitoring
+			wrapGAppsHook
+		];
 
 		src = ./test;
 

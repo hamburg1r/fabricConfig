@@ -33,19 +33,19 @@ class verticalBar(Window):
 
 		self.cpu_info = CircularProgressBar(
 			size = (20, 20),
-			name = "circular-progress-bar",
+			name = "progress-bar",
 			vexpand = True,
 			hexpand = True,
 		)
 		self.memory_info = CircularProgressBar(
 			size = (20, 20),
-			name = "circular-progress-bar",
+			name = "progress-bar",
 			vexpand = True,
 			hexpand = True,
 		)
 		self.battery_info = CircularProgressBar(
 			size = (20, 20),
-			name = "circular-progress-bar",
+			name = "progress-bar",
 			vexpand = True,
 			hexpand = True,
 		)
