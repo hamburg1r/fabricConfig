@@ -23,7 +23,7 @@ class verticalBar(Window):
 			exclusive = True,
 			visible = False,
 			all_visible = False,
-			open_inspector = True,
+			# open_inspector = True,
 		)
 
 		self.dateTime = DateWidget(
