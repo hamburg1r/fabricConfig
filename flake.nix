@@ -1,74 +1,61 @@
 {
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    systems.url = "github:nix-systems/default";
-    gtk-session-lock.url = "github:Cu3PO42/gtk-session-lock";
-  };
+	description = "My Fabric Bar Test V1";
 
-  outputs = {
-    systems,
-    nixpkgs,
-    ...
-  } @ inputs: let
-    eachSystem = f:
-      nixpkgs.lib.genAttrs (import systems) (
-        system:
-          f (import nixpkgs {
-            inherit system;
-            overlays = [
-              (final: _: let
-                gtk-session-lock = inputs.gtk-session-lock.packages.${system}.default;
-              in {
-                inherit gtk-session-lock;
-              })
-            ];
-          })
-      );
-	   forAllSystems = nixpkgs.lib.genAttrs [
-            "aarch64-linux"
-            "i686-linux"
-            "x86_64-linux"
-            "aarch64-darwin"
-            "x86_64-darwin"
-        ];
-  in {
-		packages = forAllSystems (system:
-            let pkgs = nixpkgs.legacyPackages.${system};
-            in import ./packages.nix { inherit pkgs; }
-        );
-    devShells = eachSystem (pkgs: let
-      fabric = pkgs.python3Packages.callPackage ./nix/fabric-meson.nix {};
-    in {
-      default = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          # Custom Packages
-          fabric
+	inputs = {
+		nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+		utils.url = "github:numtide/flake-utils";
 
-          # add aditional python packages here
-          python3Packages.psutil
-          python3Packages.colorthief
-          python3Packages.requests
-          python3Packages.lxml
-          python3Packages.pam
-          python3Packages.thefuzz
-		  python3Packages.libsass
+		fabric = {
+			url = "github:nikitax44/fabric/run-widget_qol";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+		fabric-libgray = {
+			url = "github:Fabric-Development/gray";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+		fabric-libglace = {
+			url = "github:muhchaudhary/glace/hyprland";
+			inputs.nixpkgs.follows = "nixpkgs";
+		};
+	};
 
-          ruff # Formatter
-          vala-language-server # for vala code completions
-        ];
-        nativeBuildInputs = with pkgs; [
-          vala # Vala compiler
-          gobject-introspection
+	outputs = {
+		self,
+		nixpkgs,
+		utils,
+		fabric,
+		...
+	} @ inputs: utils.lib.eachDefaultSystem (
+		system: let
+			overlays = [
+				(_: _: {fabric-libglace = inputs.fabric-libglace.packages.${system}.default;})
+				(_: _: {basedpyright = nixpkgs.legacyPackages.${system}.basedpyright;})
+				(_: _: {fabric-libgray = inputs.fabric-libgray.packages.${system}.default;})
 
-          # non python aditional packages
-          gtk-session-lock # For gtk lock screen
-          playerctl # For mpirs
-          gnome.gnome-bluetooth # For bluetooth
-          networkmanager # For network
-          libgweather # For weather
-          libgudev # For uevent monitoring
-        ];
-      };
-    });
-  };
+				(_: _: {gengir = pkgs.python3Packages.callPackage ./nix/gengir.nix {};})
+				(_: _: {rlottie-python = pkgs.python3Packages.callPackage ./nix/rolttie-python.nix {};})
+				(_: _: {pywayland-custom = pkgs.python3Packages.callPackage ./nix/pywayland.nix {};})
+				(_: _: {run-widget = fabric.packages.${system}.run-widget;})
+
+				fabric.overlays.${system}.default
+			];
+
+			pkgs = import nixpkgs {
+				inherit system;
+				inherit overlays;
+			};
+		in {
+			formatter = pkgs.nixfmt-rfc-style;
+			devShells.default = pkgs.callPackage ./shell.nix {
+				inherit pkgs;
+			};
+			packages.default = pkgs.callPackage ./derivation.nix {
+				inherit (pkgs) lib python3Packages;
+			};
+			apps.default = {
+				type = "app";
+				program = "${self.packages.${system}.default}/bin/fabric-config";
+			};
+		}
+	);
 }
