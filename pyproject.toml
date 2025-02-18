@@ -3,16 +3,17 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "Fabric-config"
+name = "fabric-config"
 version = "0.0.1"
 requires-python = ">= 3.11"
 authors = []
 maintainers = []
-description = "Fabric using Nix."
+description = "Fabric using Nix example."
 readme = "README.md"
+license = { file = "LICENSE" }
 
 [project.scripts]
-fabric-config = "fabric_config.main:main"
+start-desktop = "desktop.main:main"
 
 [tool.setuptools.packages]
 find = { namespaces = true }

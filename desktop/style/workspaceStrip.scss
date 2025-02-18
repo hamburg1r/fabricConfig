@@ -1,0 +1,29 @@
+$ws-col: ( $color1 $color2 $color3 $color4 $color5 );
+
+window#WorkspaceStrip0 .workspaces {
+	font-size: 0rem;
+	@for $i from 1 through 10 {
+		& .#{$i} {
+			all: unset;
+			// @debug (($i - 1) % (length($ws-col))+1);
+			// @debug nth($ws-col, (($i - 1) % (length($ws-col)))+1);
+			background-color: nth($ws-col, (($i - 1) % (length($ws-col)))+1);
+			opacity: .245;
+			min: {
+				height: .4rem;
+			}
+
+			&.active.occupied {
+				opacity:1;
+			}
+
+			&.active {
+				opacity:1;
+			}
+
+			&.occupied {
+				opacity: .55;
+			}
+		}
+	}
+};

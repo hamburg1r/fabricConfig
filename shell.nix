@@ -4,6 +4,7 @@ in
 	pkgs.mkShell {
 		name = "fabric-shell";
 		packages = with pkgs; [
+			run-widget
 			ruff # Linter
 			basedpyright # Language server
 
@@ -20,14 +21,13 @@ in
 			# Addional packages
 
 			fabric-libgray
-			fabric-libglace
+			# fabric-libglace
 			networkmanager
 			playerctl
 			librsvg
 
 			(python3.withPackages (
-				ps:
-				with ps;
+				ps: with ps;
 				[
 					setuptools
 					wheel
@@ -37,8 +37,7 @@ in
 					pyopengl
 					numpy
 					pygobject-stubs
-				]
-				++ shared.sharedPythonPackages
+				] ++ shared.sharedPythonPackages
 			))
 		];
 
